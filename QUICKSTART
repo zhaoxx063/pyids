@@ -1,0 +1,28 @@
+This guide can be used to start using PyIDS in no time but probably better options for your system could be found looking through the full documentation.
+
+1) Download the tar.gz in the directory that you want to have the "pyids/" dir, ie. /usr/sbin
+
+2) Extract the sources:
+   
+    $ tar xzvf pyids.tar.gz
+   
+   The "pyids/" directory will be created.
+
+3) Edit the file config-example.xml to indicate the options for your system and save it to config.xml
+    
+    $ vim config-example.xml
+
+4) Create the checksum database. It will take some time.
+  
+    # python main.py -v -g
+
+5) Execute PyIDS for the first time with all checks to test the configuration. It will take some time because checksum comprobation.
+
+    # python main.py -v -m -a -u -p -c -e root@localhost
+ 
+6) Now you have some results that should be fine tunne correcting the config file.
+   
+7) If you don't get any error you can add PyIDS to crontab with the -d flag:
+
+    # crontab -e
+    */5 * * * * /usr/sbin/pyids/main.py -f  /usr/sbin/pyids/config.xml -d

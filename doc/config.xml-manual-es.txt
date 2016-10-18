@@ -1,0 +1,144 @@
+NOMBRE
+	config.xml - fichero de configuración de PyIDS
+
+SINOPSIS
+	config.xml
+
+DESCRIPCIÓN
+	config.xml es el fichero de configuración de PyIDS. Este fichero tiene un
+	formato de etiquetas XML especificas que engloban las distintas opciones.
+	Los comentarios de XML están permitidos:
+		<!-- -->
+
+ETIQUETAS
+	<configuration></configuration> engloba toda la información contenida en el
+	fichero de configuracion. El resto de las etiquetas descritas en este manual
+	se deben incluir dentro de estas etiquetas.
+
+	<logfile>/var/log/pyids.log</logfile>
+	Estas etiquetas contienen el lugar por defecto donde se logueará información
+	referente a PyIDS.
+
+	<timestamps>executions.dat</timestamps>
+	Estas etiquetas indican el fichero por defecto donde se anotarán los
+	timestams de las ejecuciones de los distintos checkeos con el objetivo de
+	averiguar más adelante si ha transcurrido el intervalo especificado en el
+	fichero de configuración o no. Se utiliza cuando se emplea el flag '-d' o
+	'--default'.
+
+	<email></emails>
+	Estas etiquetas engloban la información relacionada con el envio de la
+	salida por email.
+	
+	<group></group>
+	Estos tags no se usan por el momento.
+
+	<email>root@example.com</email>
+	Es la dirección de email que se utilizará por defecto si se utiliza la
+	salida por email o se ejecuta PyIDS con el flag '-d' o '--default'.
+
+	<server>smtp.example.com</server>
+	Es el servidor de correo que se usará.
+
+	<source>pyids@example.com</server>
+	Es la dirección de correo que se usará en el campo From: del correo
+	saliente.
+
+	<memory></memory>
+	Estas etiquetas engloban la información relacionada con el chequeo de
+	memoria.
+
+	<interval>15</interval>
+	Estas etiquetas indican el tiempo en minutos que habrá entre la ejecución de
+	un chequeo y una nueva ejecución del mismo chequeo mientras se emplee el
+	flag '-d' o '--default' al ejecutar PyIDS.
+
+	<level id="1"></level>
+	Cada nivel contiene una clasificación distinta de lo que es un proceso
+	"egoista". Podemos especificar tantos niveles como deseemos. Cada nivel
+	tiene que tener un id natural distinto.
+
+	<percentage>10</percentage>
+	Indica el porcentaje de CPU máximo que un proceso puede utilizar.
+	<minutes>10</minutes>
+	Indica la cantidad de tiempo en minutos que un proceso puede estar
+	utilizando el porcentaje de CPU arriba indicado sin que se lance una alerta
+	y se haga un renice del proceso. Es decir, si un proceso consume un 10% o
+	más de CPU durante 10 minutos o más se considera un proceso "egoista" y se
+	tomarán las medidas espeficidas.
+
+	<priority>10</priority>
+	Indica el nivel de prioridad que se le pondrá a un proceso clasificado como
+	egoista según este nivel.
+
+	Cada nivel puede tener valores distintos para los distintos campos.
+
+	<acls></acls>
+	Estas etiquetas contienen la información relacionada con el chequeo de las
+	acls.
+	<interval>120</interval>
+	Estas etiquetas aparecen en cada chequeo y significan los mismo. Puedes
+	mirar la descripción de la etiqueta <interval></interval> más arriba.
+
+	<rule></rule>
+	Estas etiquetas contienen una regla de la lista de control de accesos.
+	Podemos tener tantas reglas como queramos. Cuando el chequeo de acls se
+	ejecuta lee las reglas aquí especificadas y mira las caracteristicas de los
+	procesos en ejecución. Si una regla casa con las características de un
+	proceso no ocurre nada. Si un proceso no casa con ninguna regla se emite una
+	alerta ya que se están violando las acls.
+	Cada regla dispone de los siguientes campos:
+		<user>root</user>
+			Especifica el usuario o usuarios que pueden estar ejecutando el proceso.
+			Se puede utilizar una lista o un asterisco en este campo. Por ejemplo:
+				<user>root,juan</user> Indica cualquiera de los dos usuarios.
+				<user>*</user> Cualquier usuario casaría con esta regla.
+		<executable>/sbin/pump</executable>
+			El path completo al ejecutable.
+		<port>68</port>
+			Puerto que está permitido por esta regla que se abra.
+		<protocol>TCP</protocol>
+			Protocolo que está permitido por esta regla que se utilice.
+
+		Todos los campos pueden utilizar una lista o un asterisco en vez de un
+		únito item. Por ejemplo se pueden especificar varios puertos:
+			<port>80,8080,8081</port>
+		O todos los protocolos:
+			<protocol>*</protocol>
+
+		<database></database>
+		Esta etiqueta contiene toda la información referente a la base de datos
+		donde se almacenan los checksums.
+		<file>pyids.db</file>
+		Cuando estas etiquetas aparecen dentro de las etiquetas
+		<database></database>, especifican el lugar donde se almacenará la base de
+		datos de checksums.
+
+		<checksums></checksums>
+		Estas etiquetas engloban la información relacionada con el chequeo de
+		checksums.
+		<file>/sbin</file>
+		<file>/etc/passwd</file>
+		Cuando estas etiquetas aparecen dentro de las etiquetas de checksums
+		especifican un fichero o directorio que debe ser monitorizado por PyIDS.
+		Podemos especificar tantos <file></file> como queramos.
+		Si especificamos un directorio, se monitorizarán TODOS los ficheros bajo
+		este directorio y los siguientes añadidos de manera recursiva.
+	
+		<connections></connections>
+		Estas etiquetas engloban toda la información relacionada con el chequeo de
+		conexiones desconocidas.
+		<iprange>127.0.0.1</iprange>
+		<iprange>192.168.*.*</iprange>
+		Cada ip contenida en los rangos de ips especificados se considera ip
+		conocida. Si se detecta una conexión entre una ip que aparece en alguno de
+		estos rangos y la máquina local no pasará nada. Si se detecta una conexión
+		entre la máquina local y una ip que no aparezca aquí se emitirá una
+		alerta.
+
+FICHEROS
+	/etc/pyids/config.xml
+
+MIRAR TAMBIÉN
+	Manual de Pyids
+	

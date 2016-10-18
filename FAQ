@@ -1,0 +1,15 @@
+If you have any doubt or problem email me to florencio.cano@gmail.com
+Thanks for trying PyIDS.
+
+1) ImportError: No module named datetime
+
+[PROBLEM]
+
+Traceback (most recent call last):
+  File "main.py", line 6, in ?
+    import datetime
+ImportError: No module named datetime
+
+[SOLUTION]
+
+  Upgrade the version of Python you are using. The datetime module appeared the first time in version 2.3

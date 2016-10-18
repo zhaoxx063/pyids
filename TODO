@@ -1,0 +1,6 @@
+- Add file attributes checking.
+- Add SUID files checking.
+- Add encrypted database support.
+- Profiling.
+- Code coverage.
+- More complete tests (and better, using mock objects where necessary).

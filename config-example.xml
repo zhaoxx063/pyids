@@ -1,0 +1,84 @@
+<configuration>
+  <lsof_path>/usr/sbin/lsof</lsof_path>
+
+  <database_file>/etc/pyids/pyids.db</database_file>  
+  <logfile>/var/log/pyids.log</logfile>
+  <timestamps>/etc/pyids/executions.dat</timestamps>
+
+  <emails>
+    <email>root@localhost</email>
+    <smtp_server>smtp.example.com</smtp_server>
+    <source_email>pyids@localhost</source_email>
+  </emails>
+  
+  <memory>
+    <interval>15</interval>
+    <level id="1">
+      <percentage>10</percentage>
+      <minutes>10</minutes>
+      <priority>12</priority>
+    </level>
+    
+    <level id="2">
+      <percentage>50</percentage>
+      <minutes>5</minutes>
+      <priority>15</priority>
+     </level>
+    
+    <level id="3">
+      <percentage>90</percentage>
+      <minutes>1</minutes>
+      <priority>19</priority>
+    </level>
+  </memory>
+
+  <acls>
+    <interval>120</interval>
+    <rule>
+      <user>root</user>
+      <executable>/sbin/pump</executable>
+      <port>68</port>
+      <protocol>TCP</protocol>
+    </rule>
+    <rule>
+      <user>root</user>
+      <executable>/usr/sbin/sshd</executable>
+      <port>22</port>
+      <protocol>TCP</protocol>
+    </rule>
+    <rule>
+      <user>root</user>
+      <executable>/usr/sbin/xinetd</executable>
+      <port>2811</port>
+      <protocol>TCP</protocol>
+    </rule>
+    <rule>
+      <user>globus</user>
+      <executable>/usr/java/j2sdk1.4.2_12//bin/java</executable>
+      <port>8443</port>
+      <protocol>TCP</protocol>
+    </rule>
+  </acls>
+
+  <checksums>
+    <interval>86400</interval>
+    <file>/bin</file>
+    <file>/etc</file>
+    <file>/lib</file>
+    <file>/opt</file>
+    <file>/root</file>
+    <file>/sbin</file>
+    <file>/usr</file>
+  </checksums>
+
+  <connections>
+    <interval>15</interval>
+    <iprange>127.0.0.1</iprange>
+  </connections>
+
+  <logs>
+    <interval>1440</interval>
+    <log>/var/log/secure</log>
+    <pattern_file>/etc/pyids/patterns.dat</pattern_file>
+  </logs>
+</configuration>

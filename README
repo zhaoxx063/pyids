@@ -1,0 +1,49 @@
+Requeriments
+------------
+PyIDS needs Python 2.4.0 or above mainly because the subprocess module.
+PyIDS is under development and needs adjustments for running in different 
+systems. For instance PyIDS uses lsof but it is found in different places
+in different systems (or possibly not installed). The task of searching
+the correct path is not implemented in PyIDS right now but it will be 
+implemented soon.
+
+Introduction
+------------
+PyIDS is an opensource, python written, host based intrusion detection system
+that tries to unify some characteristics of other IDS and adds some checks
+useful for computer administrators.
+
+Features
+--------
+- Compares actual file checksums against an original database of file checksums
+  searching differences.
+- Search "greed" processes consuming too much memory and do a renice.
+- Look for "unknown" connections between the machine executing PyIDS and other
+  machines from Internet.
+- Look for processes that open ports in the machine without explicit permission
+  from the administrator.
+
+The output information could be sent to email addresses, to the console or to a
+log file.
+
+PyIDS could be added to the cron and if executed with a special flag '-d' all the
+config necessary will be fetched from a config file and the checks will be
+executed with a defined interval. For example we could execute PyIDS each 5
+minutes but the checksum check will be executed once a week.
+
+A typical INSTALL
+------------------
+- Download PyIDS and copy it to /usr/local
+- Uncompress it:
+    tar xzvf /usr/local/pyids-x.x.x.tar.gz
+- Enter the main directory:
+    cd /usr/local/pyids-x.x.x
+- Edit the config file (read the comments):
+    vim config.xml
+- Generate the checksum database
+    python main.py -g
+- Execute PyIDS the first time (writting down the checks timestamps)
+    python main.py -d
+
+The next time PyIDS is executed not all checks will be executed only those 
+checks whose interval had expired.

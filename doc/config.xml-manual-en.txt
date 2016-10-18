@@ -1,0 +1,97 @@
+NAME
+	config.xml - configuration file for PyIDS
+
+SYNOPSIS
+	config.xml
+
+DESCRIPTION
+	config.xml is the configuration file por PyIDS. The file es written in XML with options enclosesd in defined xml tags. The usual xml comment styles are supported:
+	<!-- -->
+
+TAGS
+	<configuration></configuration> enclose all the config file.
+	All the remaining tags should be included inside these tags.
+
+	<logfile>/var/log/pyids.log</logfile>
+	These tags enclose the default log file.
+
+	<timestamps>executions.dat</timestamps>
+	These tags enclose the file that will contain the checks execution timestamps.
+
+	<emails><emails>
+	These tags enclose the information related to email output.
+
+	<group></group>
+	These tags are not used yet.
+	
+	<email>root@example.com</email>
+	This is the default email address where the logs will be sent.
+
+	<server>smtp.example.com</server>
+	This is the email server.
+
+	<source>pyids@example.com</source>
+	This is the email address that will appear in the From: field.
+
+	<memory></memory>
+	These tags enclose the information related to the memory check.
+
+	<interval>15</interval>
+	Interval encloses the time in minutes between each execution of the check memory when using the '-d' or '--default' flags.
+
+	<level id="1"></level>
+	Each level encloses a different classification of greed processes. We can have as many levels as we want. Each level should have a different possitive integer id.
+
+	<percentage>10</percentage>
+	Means the maximun percentage of CPU allowed to use.
+	<minutes>10</minutes>
+	Means the maximun number of minutes that a process could be consuming a <percentage>% of CPU. In this case, a process using during 10 minutes or more, 10% of CPU or more will be considered a greed process.
+	<priority>10</priority>
+	It is the priority that will be used as argument for the renice.
+
+	<acls></acls>
+	These tags encloses the information related to the acls check.
+	<interval>120</interval>
+	These tags appears in each check and they mean the same. Look the <interval></interval> description before.
+	
+	<rule></rule>
+	These tags encloses a rule in the access control list. We can have as many rules as we want. When the acl check is executed it reads the rules and the process being executed. If a rule matches with a process being executed characteristics it is allowed. If no rule matches with it an alert is thrown.
+	Each rule have:
+		<user>root<user>
+		The user allowed to execute the process. Could be a list separated with ',' or a '*'. I.e:
+			<user>root,john</user> or <user>*</user>
+		'*' means all users are allowed to execute this process.
+		<executable>/sbin/pump</executable>
+		The full path to the process being executed.
+		<port>68</port>
+		The port that is allowed to being opened by the user and the process.
+		<protocol></protocol>
+		The protocol that the process could use through the port, i.e TCP
+
+		All the fields could contain a list with each item separated by commas (',') or an asterisk ('*').
+
+		<database></database>
+		Encloses the information related to the checksums database
+		<file>pyids.db</file>
+		When these tags appear inside the <database></database> tags, they specify the place where the checksums database will be stored.
+
+		<checksums></checksums>
+		These tags encloses the information related to the checksums check.
+		<file>/sbin</file>
+		<file>/etc/passwd</file>
+		When these tags appear inside the checksums tags they specify a file or directory that should be monitorized by PyIDS.
+		We can have as many <file></file> as we want.
+
+		<connections></connections>
+		These tags enclose the information related to the unknown connections checks.
+		<iprange>127.0.0.1</iprange>
+		<iprange>192.168.*.*</iprange>
+		Each iprange specify a range of ips that will be considered known. If a connection is detected but it connects the local machine with an ip of one of these ranges it will be considered known an no alert will be recorded.
+
+FILES
+	/etc/pyids/config.xml
+
+SEE ALSO
+	PyIDS manual
+		
+		

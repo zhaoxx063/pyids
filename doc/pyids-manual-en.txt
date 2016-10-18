@@ -1,0 +1,94 @@
+PyIDS - Host based IDS written in Python
+----------------------------------------
+SYNOPSIS
+	python main.py [Options]
+
+DESCRIPTION
+	PyIDS is a an open source IDS for intrusion or malfunction detection. It was
+	created to unify in one tool different checks performed by different IDS
+	already available. PyIDS detects modification of files through checksum
+	comparison, unknown connection from Internet, too much consuming of CPU by
+	processes and execution of processes that open ports and are not allowed to.
+	PyIDS performs these tasks by using different tools as lsof or netstat and
+	looking into some file logs.
+	The output of PyIDS are alerts about these facts and from which hosts.
+	A typical execution of PyIDS could return:
+	
+	# python main.py -c
+	Time -> 2006-08-04 13:00:27.599561
+	Host -> hedyet.itaca.upv.es
+	CHECKSUMS
+	/etc/passwd
+	/etc/shadow
+	
+	The host field is useful if PyIDS is executed in a remote host and its
+	output sending through email.
+
+	The last release of PyIDS can be obtained from
+	https://sourceforge.net/projects/pyids/
+
+OPTIONS SUMMARY
+	This options summary is printed when PyIDS is run with the '-h' or '--help'
+	arguments. It helps people remember the most common options, but is not
+	substitute for the in-depth documentation in the rest of this manual.
+
+  usage: main.py [options]
+	
+	options:
+		-h, --help						show this help message and exit
+		-c, --checksum				check the filesystem checksums
+		-g, --generate				generate the database and store the filesystem
+													checksums
+		-m, --memory					check the cpu used by processes in memory
+		-a, --acls						check that acls are being respected
+		-u, --unkips					check if there exist connections with 'unknown ips'
+		-e EMAIL, --email=EMAIL
+													send report to email
+		-l LOGFILE, --logfile=LOGFILE
+													log report to logfile []
+		-q, --quiet						*do not* print to standard output
+		-d, --default					options are cached from config file
+	  -f CONFIG_FILE, --config=CONFIG_FILE
+													indicate an alternate config file
+
+CHECK OPTIONS
+	-c, --checksum (check checksums)
+		Read files and directories being monitored from the config file and files
+		and directories in the checksum database file. Then compare if they hace
+		the same checksums. Otherwise throw an alert.
+	-m, --memory (check memory)
+		Look for "greed" processes in memory. The config file stablish which
+		processes are greed. If a greed process is found an alert is thrown.
+	-a, --acls (check acls)
+		An access control list is created to allow/disallow users from executing
+		services that open ports on the machine.
+		This option checks if the acls are being respected. Otherwise, an alert is
+		thrown.
+	-u, --unkips (check unknown connections)
+		Check if there exist any connection between the local host and a remote
+		machine with an ip not classified as "known". "Known ips" (and ip ranges)
+		are indicated in the config file.
+		If an unknown connection is detected an alert is thrown.
+OUTPUT
+	-l LOGFILE, --logfile=LOGFILE
+		All the thrown alerts are logged to a log file specified here.
+	-e EMAIL, --email=EMAIL
+		All the thrown alerts are sent through email.
+	-q, --quiet
+		The alerts are not sent to the terminal. If any other output method is
+		specified it won't be affected.
+MISC
+	-g, --generate (generate checksum database)
+		Read files and directories that should be monitored from config file and
+		build the checksum database of those files. Then, store the generated
+		database in the file specified in the config file.
+	-d, --default
+		All options are read from the config file. The timestamp of each check are
+		recorded. The next time PyIDS is executed using this option if the
+		interval for a check is off the check is executed. If not, the check is
+		not executed during this execution. The idea behind this option is
+		executing PyIDS within cron.
+	-f CONFIG_FILE, --config=CONFIG_FILE
+		Specify a different place from the default for the config file.
+		
+

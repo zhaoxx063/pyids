@@ -1,0 +1,23 @@
+2006-08-02 11:40  fcano
+
+	* README, config.xml: README file nueva, config.xml general y con
+	  comentarios
+
+2006-08-02 10:58  fcano
+
+	* acls.py, checksums.py, config.xml: acls.py funciona si lsof solo
+	  encuentra un proceso; checksums.py se mejora el mensaje de
+	  salida; en config.xml esta adaptado para mi entorno de trabajo
+
+2006-08-01 13:48  fcano
+
+	* Nivel.py, Output.py, Proceso.py, acls.py, checksums.py,
+	  config.xml, config_parser.py, connections.py, consume.py,
+	  main.py, memory.py: Initial import into CVS
+
+2006-08-01 13:48  fcano
+
+	* Nivel.py, Output.py, Proceso.py, acls.py, checksums.py,
+	  config.xml, config_parser.py, connections.py, consume.py,
+	  main.py, memory.py: Initial revision
+

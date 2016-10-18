@@ -1,0 +1,106 @@
+PyIDS - Un IDS basado en host programado en Python
+--------------------------------------------------
+SINOPSIS
+	python main.py [Opciones]
+
+DESCRIPCIÓN
+	PyIDS es un sistema de detección de intrusos de código abierto. Fue creado
+	con el objetivo de unificar en una herramienta las diferentes comprobaciones
+	de diferentes IDS ya disponibles para los usuarios. Si PyIDS detecta
+	modificaciones en ficheros (a través del cálculo de checksums), conexiones
+	desconocidas desde Internet a la máquina local, procesos que consumen
+	demasiada CPU y procesos en ejecución que abren puertos en la máquina y que
+	no les está permitido hacerlo.
+	PyIDS realiza estas tareas haciendo uso de diferentes herramientas
+	normalmente incluidas en el sistema como lsof o netstat y analizando
+	ficheros de logs.
+	La salida de PyIDS se compone de una serie de alertas con información sobre
+	las anomalías encontradas e información sobre el host donde se encontró como
+	el nombre de host y la fecha y hora.
+	Una ejecución típica de PyIDS podría devolver:
+
+	# python main.py -c
+	Time -> 2006-08-04 13:00:27.599561
+	Host -> hedyet.itaca.upv.es
+	CHECKSUMS
+	/etc/passwd
+	/etc/shadow
+
+	El campo de host es útil en el caso de que PyIDS dentro de una organización
+	se ejecute en máquinas distintas y las alertas sean enviadas a través del
+	correo.
+
+	La última versión disponible de PyIDS se puede encontrar en
+	https://sourceforge.net/projects/pyids/
+
+RESUMEN DE OPCIONES
+	Este resumen de opciones se muestra cuando PyIDS se ejecuta con el flag '-h'
+	o '--help'. El objetivo de este resumen es ayudar a recordar las opciones más
+	frecuentes pero no es un sustituto para el resto de la documentación que se
+	puede encontrar en este manual.
+	
+	usage: main.py [options]
+	
+	options:
+		-h, --help						show this help message and exit
+		-c, --checksum				check the filesystem checksums
+		-g, --generate				generate the database and store the filesystem
+													checksums
+		-m, --memory					check the cpu used by processes in memory
+		-a, --acls						check that acls are being respected
+		-u, --unkips					check if there exist connections with 'unknown ips'
+		-e EMAIL, --email=EMAIL
+													send report to email
+		-l LOGFILE, --logfile=LOGFILE
+													log report to logfile []
+		-q, --quiet						*do not* print to standard output
+		-d, --default					options are cached from config file
+	  -f CONFIG_FILE, --config=CONFIG_FILE
+													indicate an alternate config file
+
+TIPOS DE CHECKEOS
+	-c, --checksum (comprobar checksums)
+		Lee los ficheros y directorios que están siendo monitorizados por PyIDS
+		del fichero de configuración de ya la base de datos de checksums y compara
+		sus checksums en busca de diferencias. Si las hubiera se lanza una alerta.
+	-m, --memory (comprobar memoria)
+		Busca procesos "egoístas" en la memoria. Un proceso es egoísta si así lo
+		indican las reglas que se pueden encontrar en el fichero de configuración.
+		Si se encuentra un proceso egoísta se realiza un renice y se lanza una
+		alerta.
+	-a, --acls (comprueba acls)
+		Una lista de control de acceso se crea para permitir/prohibir la ejecución
+		de procesos que abran puertos en la máquina. Esta opción comprueba que las
+		acls se están respetando. En caso contrario se lanza una alerta.
+	-u, --unkips (busca conexiones desconocidas)
+		Comprueba si existe alguna conexión entre la máquina local y una máquina
+		remota con una ip no clasificada como "conocida". Las ips conocidas (o
+		rangos de ips) están especificados en el fichero de configuración.
+		Si se detecta una conexión desconocida se lanza una alerta.
+SALIDA
+	-l LOGFILE, --logfile=LOGFILE
+		Todas las alertas que se lancen son logueadas en el fichero aquí
+		especificado.
+	-e EMAIL, --email=EMAIL
+		Todas las alertas que se lancen son enviadas por email a la dirección aquí
+		especificada.
+	-q, --quiet
+		Las alertas no se escriben en la terminal. Si algún otro método de salida
+		se ha especificado no se ve afectado por esta opción.
+MISC
+	-g, --generate (generar base de datos de checksums)
+		Lee los ficheros y directorios que PyIDS debe monitorizar del fichero de
+		configuración y construye la base de datos de checksums. A continuación
+		almacena esta base de datos en el fichero especificado en el fichero de
+		configuración.
+	-d, --default
+		Se toman las opciones especificadas en el fichero de configuración. Se
+		anotan los timestamps de ejecución de todos los checkeos que se realicen.
+		La siguiente vez que se ejecute PyIDS sólo se ejecutarán aquellos checkeos
+		cuyo intervalo (especificado en el fichero de configuración) haya
+		transcurrido. Si no ha pasado el suficiente tiempo para un checkeo este no
+		se ejecutara esta vez. La idea tras esta opción es ejecutar diversos
+		checkeos en diferentes intervalos con una sóla linea del cron.
+	-f CONFIG_FILE, --config=CONFIG_FILE
+		Especifica un lugar donde se encontrará el fichero de configuración
+		distinto del estandar.
